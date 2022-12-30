@@ -1,0 +1,23 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    rate-movie-routingKey: routingKey
+    exchange: exchange
+    rate-movie-queue: queue
+    exchangeType: direct
+    virtual-host: /
+    username: guest
+    password: guest
+    primary: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: sending.some.messages@gmail.com
+    password: SendingSomeMessages123
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

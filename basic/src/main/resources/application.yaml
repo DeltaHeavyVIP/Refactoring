@@ -1,0 +1,41 @@
+#Data for database
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/refactoring
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    show-sql: true
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  rabbitmq:
+    host: localhost
+    port: 5672
+    rate-movie-routingKey: routingKey
+    exchange: exchange
+    rate-movie-queue: queue
+    exchangeType: direct
+    virtual-host: /
+    username: guest
+    password: guest
+    primary: true
+
+# Data for security
+jwt:
+  secret:
+    user: jwtSecretUser
+    film: jwtSecretFilm
+
+application:
+  spam:
+    receiver: sosiskiwteste@mail.ru

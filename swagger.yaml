@@ -1,0 +1,865 @@
+openapi: 3.0.3
+info:
+  title: Рефакторинг баз данных и приложений
+  description: Разработать спецификацию в формате OpenAPI для проекта "Refactoring" 
+  version: 1.0.11
+tags:
+  - name: Authorization operations
+    description: операции связаные с Token
+  - name: User operations
+    description: операции для User
+  - name: Card operations
+    description: CRUD операции для Card
+  - name: Film operations
+    description: CRUD операции для Film
+paths:
+  /api/card/{id}:
+    get:
+      tags:
+        - Card operations
+      description: | 
+        **Получить информацию об элементе Card по id**
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 5
+      operationId: getCardById
+      responses:
+        '200':
+          description: '**Запрос выполнен успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardInformationResponse"
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+    delete:
+      tags:
+        - Card operations
+      description: | 
+        **Удаление элемента Card по id**
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 5
+      operationId: deleteCardById
+      responses:
+        '200':
+          description: '**Удаление прошло успешно.**'
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+    put:
+      tags:
+        - Card operations
+      description: | 
+        **Обновление элемента Card по id**
+        - Поле cardNumber не может быть null
+        - Поле cardDateEnd не может быть null
+        - Поле cardCVC не может быть null
+        - Поле money должно быть больше 0
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 5
+      operationId: updateCardById
+      requestBody:
+        description: Данные Card для обновления
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardInformation'
+      responses:
+        '200':
+          description: '**Обновление прошло успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardInformationResponse"
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /api/card:
+    post:
+      tags:
+        - Card operations
+      description: |
+        **Создает новый объект Card**
+          - Поле cardNumber не может быть null
+          - Поле cardDateEnd не может быть null
+          - Поле cardCVC не может быть null
+          - Поле money должно быть больше 0
+      operationId: createCard
+      requestBody:
+        description: Данные Card для создания
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardInformation'
+      responses:
+        '200':
+          description: '**Создание прошло успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardInformationResponse"
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /api/film/{id}:
+    get:
+      tags:
+        - Film operations
+      description: | 
+        **Получить информацию об элементе Film по id**
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 100
+      operationId: getFilmById
+      responses:
+        '200':
+          description: '**Запрос выполнен успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FilmInformationResponse"
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+    delete:
+      tags:
+        - Film operations
+      description: | 
+        **Удаление элемента Film по id**
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 100
+      operationId: deleteFilmById
+      responses:
+        '200':
+          description: '**Удаление прошло успешно.**'
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+    put:
+      tags:
+        - Film operations
+      description: | 
+        **Обновление элемента Film по id**
+        - Поле name не может быть null
+        - Поле describe
+        - Поле cost не может быть null
+        - Поле releaseYear не может быть null
+        - Поле producer не может быть null
+        - Поле genre не может быть null
+      parameters:
+        - description: Идентификатор элемента
+          in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: id
+            example: 100
+      operationId: updateFilmById
+      requestBody:
+        description: Данные Film для обновления
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilmInformation'
+      responses:
+        '200':
+          description: '**Обновление прошло успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FilmInformationResponse"
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '404':
+          description: '**Элемент не найден.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageNotAvailable"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /api/film:
+    post:
+      tags:
+        - Film operations
+      description: |
+        **Создает новый объект Film**
+        - Поле name не может быть null
+        - Поле describe
+        - Поле cost не может быть null
+        - Поле releaseYear не может быть null
+        - Поле producer не может быть null
+        - Поле genre не может быть null
+      operationId: createFilm
+      requestBody:
+        description: Данные Film для создания
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilmInformation'
+      responses:
+        '200':
+          description: '**Создание прошло успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilmInformationResponse'
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /api/auth/register:
+    post:
+      tags:
+        - Authorization operations
+      description: |
+        **Регистрация пользователя**
+        - Поле username не может быть null
+        - Поле password не может быть null
+        - Поле roles не может быть null
+      operationId: registerUser
+      requestBody:
+        description: Данные User для создания
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInformation'
+      responses:
+        '200':
+          description: '**Создание прошло успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterInformationResponse'
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /api/auth/login:
+    post:
+      tags:
+        - Authorization operations
+      description: |
+        **Создает token для пользователя**
+        - Поле username не может быть null
+        - Поле password не может быть null
+      operationId: loginUser
+      requestBody:
+        description: Данные User для входа
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInformation'
+      responses:
+        '200':
+          description: '**Создание прошло успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshInformationResponse'
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /api/refresh/token:
+    post:
+      tags:
+        - Authorization operations
+      description: |
+        **Обновляет token пользователя**
+        - Поле refreshToken не может быть null
+      operationId: refreshToken
+      requestBody:
+        description: Данные для обновления токена
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshInformation'
+      responses:
+        '200':
+          description: '**Обновлене прошло успешно.**'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshInformationResponse'
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /api/user:
+    put:
+      tags:
+        - User operations
+      description: |
+        **Обновляет объект User**
+      operationId: updateUserInformation
+      requestBody:
+        description: Данные для обновления информации о пользователе
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserInformation'
+      responses:
+        '200':
+          description: '**Обновление прошло успешно.**'
+        '400':
+          description: '**Невалидные входные данные.**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        '500':
+          description: '**Ошибка на стороне сервера**'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+components:
+  schemas:
+    CardInformationResponse:
+      required:
+        - id
+        - cardNumber
+        - cardDateEnd
+        - cardCVC
+        - money
+        - userId
+      properties:
+        id:
+          type: integer
+          nullable: false
+          description: Id карты
+          example: 5
+        cardNumber:
+          type: string
+          nullable: false
+          description:  Номер карты
+          example: '5555 5555 5555 5555'
+        cardDateEnd:
+          type: string
+          format: date
+          nullable: false
+          description:  Дата окончания работы карты
+          example: '05/25'
+        cardCVC:
+          type: integer
+          minimum: 99
+          maximum: 999
+          nullable: false
+          description:  CVC карты
+          example: '555'
+        money:
+          type: integer
+          nullable: false
+          description:  Количество денег на карте
+          example: 555555
+        userId:
+           $ref: '#/components/schemas/UserResponse'
+    UserResponse:
+      required:
+        - id
+        - firstName 
+        - lastName
+        - middleName
+        - email
+      properties:
+        id:
+          type: integer
+          nullable: false
+          description: Id пользователя
+          example: 5
+        firstName:
+          type: string
+          nullable: false
+          description:  Имя пользователя
+          example: 'Владимир'
+        lastName:
+          type: string
+          nullable: false
+          description:  Фамилия пользователя
+          example: 'Патутин'
+        middleName:
+          type: string
+          nullable: false
+          description:  Отчество пользователя
+          example: 'Михайлович'
+        email:
+          type: string
+          format: email
+          nullable: true
+          description:  Email пользователя
+          example: 'pipiputin@mail.ru'
+    UserNullResponse:
+      required:
+        - id
+        - firstName 
+        - lastName
+        - middleName
+        - email
+      properties:
+        id:
+          type: integer
+          nullable: false
+          description: Id пользователя
+          example: 1023
+        firstName:
+          type: string
+          nullable: false
+          description:  Имя пользователя
+          example: null
+        lastName:
+          type: string
+          nullable: false
+          description:  Фамилия пользователя
+          example: null
+        middleName:
+          type: string
+          nullable: false
+          description:  Отчество пользователя
+          example: null
+        email:
+          type: string
+          format: email
+          nullable: true
+          description:  Email пользователя
+          example: null
+    PageNotAvailable:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+          description: Код ошибки
+          example: 404
+        message:
+          type: string
+          nullable: false
+          description:  Расшифровка ошибки
+          example: 'Not found item'
+    InternalServerError:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+          description: Код ошибки
+          example: 500
+        message:
+          type: string
+          nullable: false
+          description:  Расшифровка ошибки
+          example: 'Internal Server Error'
+    CardInformation:
+      required:
+        - cardNumber
+        - cardDateEnd
+        - cardCVC
+        - money
+      properties:
+        cardNumber:
+          type: string
+          nullable: false
+          description:  Номер карты
+          example: '5555 5555 5555 5555'
+        cardDateEnd:
+          type: string
+          format: date
+          nullable: false
+          description:  Дата окончания работы карты
+          example: '05/25'
+        cardCVC:
+          type: integer
+          minimum: 99
+          maximum: 999
+          nullable: false
+          description:  CVC карты
+          example: '555'
+        money:
+          type: integer
+          nullable: false
+          description:  Количество денег на карте
+          example: 555555
+    BadRequest:
+      required:
+        - code
+        - error
+        - message
+      properties:
+        code:
+          type: integer
+          nullable: false
+          description: Код ошибки
+          example: 400
+        message:
+          type: string
+          nullable: false
+          description:  Расшифровка ошибки
+          example: 'Validation Failed'
+
+    FilmInformationResponse:
+      required:
+        - id
+        - name
+        - describe
+        - cost
+        - token
+        - releaseYear
+        - producer
+        - genres
+      properties:
+        id:
+          type: integer
+          nullable: false
+          description: Id фильма
+          example: 100
+        name:
+          type: string
+          nullable: false
+          description:  Название фильма
+          example: 'Темный рыцарь: Возрождение легенды'
+        describe:
+          type: string
+          nullable: false
+          description:  Краткое описание фильма
+          example: 'Анархист в маске грозит взорвать Готэм и уничтожить Бэтмена. Грандиозный финал трилогии Кристофера Нолана'
+        cost:
+          type: integer
+          nullable: true
+          description:  Стоимость фильма
+          example: '99'
+        releaseYear:
+          type: string
+          format: date
+          nullable: false
+          description:  Дата выпуска фильма
+          example: '2012'
+        producer:
+          type: string
+          nullable: false
+          description:  Режисер фильма
+          example: 'Кристофер Нолан'
+        token:
+          type: string
+          nullable: false
+          description:  Токен для просмотра фильма
+          example: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM'
+        genres:
+          type: array
+          items:
+            type: object
+          example:
+            - id: 10
+              name: фантастика
+            - id: 20
+              name: боевик
+            - id: 25
+              name: триллер
+            - id: 27
+              name: криминал
+    FilmInformation:
+      required:
+        - name
+        - describe
+        - cost
+        - releaseYear
+        - producer
+        - genres
+      properties:
+        name:
+          type: string
+          nullable: false
+          description:  Название фильма
+          example: 'Темный рыцарь: Возрождение легенды'
+        describe:
+          type: string
+          nullable: false
+          description:  Краткое описание фильма
+          example: 'Анархист в маске грозит взорвать Готэм и уничтожить Бэтмена. Грандиозный финал трилогии Кристофера Нолана'
+        cost:
+          type: integer
+          nullable: true
+          description:  Стоимость фильма
+          example: '99'
+        releaseYear:
+          type: string
+          format: date
+          nullable: false
+          description:  Дата выпуска фильма
+          example: '2012'
+        producer:
+          type: string
+          nullable: false
+          description:  Режисер фильма
+          example: 'Кристофер Нолан'
+        genres:
+          type: array
+          description:  Жанры фильма
+          items:
+            type: object
+          example:
+            - name: фантастика
+            - name: боевик
+            - name: триллер
+            - name: криминал
+
+    RegisterInformation:
+      required:
+        - username
+        - password
+        - roles
+      properties:
+        username:
+          type: string
+          nullable: false
+          description:  Nickname пользователя
+          example: 'Vovanuc'
+        password:
+          type: string
+          nullable: false
+          description:  Пароль пользователя
+          example: 'jI@4jd85JF6djk2'
+        roles:
+          type: array
+          items:
+            type: object
+          example:
+            - role: User
+            - role: Admin
+    RegisterInformationResponse:
+      required:
+        - username
+        - user
+        - token
+        - refreshToken
+      properties:
+        username:
+          type: string
+          nullable: false
+          description:  Nickname пользователя
+          example: 'Vovanuc'
+        user:
+           $ref: "#/components/schemas/UserNullResponse"
+        token:
+          type: string
+          nullable: false
+          description:  Токен пользователя
+          example: 'Fd9kF0eXAiOiJKV1QiLCJhbGciOiJIUzАО2о38J1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM'
+        refreshToken:
+          type: string
+          nullable: false
+          description:  Токен обновления пользователя
+          example: 'PWLei24FT2XAiOiJKV1QiLCJhbGciOiJIUzАО2о38J1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM'
+    LoginInformation:
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          nullable: false
+          description:  Nickname пользователя
+          example: 'Vovanuc'
+        password:
+          type: string
+          nullable: false
+          description:  Пароль пользователя
+          example: 'jI@4jd85JF6djk2'
+    RefreshInformation:
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          nullable: false
+          description:  Токен обновления пользователя
+          example: 'PWLei24FT2XAiOiJKV1QiLCJhbGciOiJIUzАО2о38J1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM'
+    RefreshInformationResponse:
+      required:
+        - username
+        - token
+        - refreshToken
+      properties:
+        username:
+          type: string
+          nullable: false
+          description:  Nickname пользователя
+          example: 'Vovanuc'
+        token:
+          type: string
+          nullable: false
+          description:  Токен пользователя
+          example: 'Fd9kF0eXAiOiJKV1QiLCJhbGciOiJIUzАО2о38J1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM'
+        refreshToken:
+          type: string
+          nullable: false
+          description:  Токен обновления пользователя
+          example: 'PWLei24FT2XAiOiJKV1QiLCJhbGciOiJIUzАО2о38J1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM'
+    UpdateUserInformation:
+      required:
+        - firstName
+        - lastName
+        - middleName
+        - email
+      properties:
+        firstName:
+          type: string
+          nullable: true
+          description:  Имя пользователя
+          example: 'Владимир'
+        lastName:
+          type: string
+          nullable: true
+          description:  Фамилия пользователя
+          example: 'Патутин'
+        middleName:
+          type: string
+          nullable: true
+          description:  Отчество пользователя
+          example: 'Михайлович'
+        email:
+          type: string
+          format: email
+          nullable: true
+          description:  Email пользователя
+          example: 'pipiputin@mail.ru'
